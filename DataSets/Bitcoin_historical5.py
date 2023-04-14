@@ -8,69 +8,51 @@ params = {
     'tsym': 'USD',      # To symbol (US Dollar)
     'limit': 2000,      # Maximum number of data
     'aggregate': 1,     # Interval 1min
-    'api_key': 'eaf45a319280874c05640ef522698d8db46fd612e723631920ffd4a540552f4f'       # **To safeguard my API call counts, I deleted my API key ***
+    'api_key': ''       # **To safeguard my API call counts, I deleted my API key ***
 }
 
 response = requests.get(url, params=params)
 data = response.json()
 
-##SMA7  //-1min
-prev_sma7 = None
+##SMA7
+sma7 = sum([data['Data']['Data'][i]['close'] for i in range(0, 7)]) / 7
 for i in range(7, len(data['Data']['Data'])):
-    if prev_sma7 is None:
-        sma7 = sum([data['Data']['Data'][i-j]['close'] for j in range(0, 7)]) / 7
+    sma7 = (sma7 * 6 + data['Data']['Data'][i]['close']) / 7
     data['Data']['Data'][i]['sma7'] = sma7
-    prev_sma7 = sma7
 
-##SMA25  //-1min
-prev_sma25 = None
+##SMA25
+sma25 = sum([data['Data']['Data'][i]['close'] for i in range(0, 25)]) / 25
 for i in range(25, len(data['Data']['Data'])):
-    if prev_sma25 is None:
-        sma25 = sum([data['Data']['Data'][i-j]['close'] for j in range(0, 25)]) / 25
+    sma25 = (sma25 * 24 + data['Data']['Data'][i]['close']) / 25
     data['Data']['Data'][i]['sma25'] = sma25
-    prev_sma25 = sma25
 
-##SMA50  //-1min
-prev_sma50 = None
+##SMA50
+sma50 = sum([data['Data']['Data'][i]['close'] for i in range(0, 50)]) / 50
 for i in range(50, len(data['Data']['Data'])):
-    if prev_sma50 is None:
-        sma50 = sum([data['Data']['Data'][i-j]['close'] for j in range(0, 50)]) / 50
+    sma50 = (sma50 * 49 + data['Data']['Data'][i]['close']) / 50
     data['Data']['Data'][i]['sma50'] = sma50
-    prev_sma50 = sma50
 
-##EMA7  //-1min
-prev_ema7 = None
+##EMA7
+ema7 = sum([data['Data']['Data'][i]['close'] for i in range(0, 7)]) / 7
+prev_ema7 = ema7
 for i in range(7, len(data['Data']['Data'])):
-    if i-6 < 0:
-        ema7 = None
-    elif prev_ema7 is None:
-        ema7 = sum([data['Data']['Data'][j]['close'] for j in range(i-6, i+1)]) / 7
-    else:
-        ema7 = (2 * data['Data']['Data'][i]['close'] + 6 * prev_ema7) / 8
+    ema7 = (2 * data['Data']['Data'][i]['close'] + 6 * prev_ema7) / 8 if prev_ema7 is not None else None
     data['Data']['Data'][i]['ema7'] = ema7
     prev_ema7 = ema7
 
-##EMA25  //-1min
-prev_ema25 = None
+##EMA25
+ema25 = sum([data['Data']['Data'][i]['close'] for i in range(0, 25)]) / 25
+prev_ema25 = ema25
 for i in range(25, len(data['Data']['Data'])):
-    if i-24 < 0:
-        ema25 = None
-    elif prev_ema25 is None:
-        ema25 = sum([data['Data']['Data'][j]['close'] for j in range(i-24, i+1)]) / 25
-    else:
-        ema25 = (2 * data['Data']['Data'][i]['close'] + 24 * prev_ema25) / 26
+    ema25 = (2 * data['Data']['Data'][i]['close'] + 24 * prev_ema25) / 26 if prev_ema25 is not None else None
     data['Data']['Data'][i]['ema25'] = ema25
     prev_ema25 = ema25
 
-##EMA25  //-1min
-prev_ema50 = None
+##EMA50
+ema50 = sum([data['Data']['Data'][i]['close'] for i in range(0, 50)]) / 50
+prev_ema50 = ema50
 for i in range(50, len(data['Data']['Data'])):
-    if i-49 < 0:
-        ema50 = None
-    elif prev_ema50 is None:
-        ema50 = sum([data['Data']['Data'][j]['close'] for j in range(i-49, i+1)]) / 50
-    else:
-        ema50 = (2 * data['Data']['Data'][i]['close'] + 49 * prev_ema25) / 51
+    ema50 = (2 * data['Data']['Data'][i]['close'] + 49 * prev_ema50) / 51 if prev_ema50 is not None else None
     data['Data']['Data'][i]['ema50'] = ema50
     prev_ema50 = ema50
 
