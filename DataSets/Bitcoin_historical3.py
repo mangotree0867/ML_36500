@@ -6,9 +6,9 @@ url = 'https://min-api.cryptocompare.com/data/v2/histominute'
 params = {
     'fsym': 'BTC',      # From symbol (Bitcoin)
     'tsym': 'USD',      # To symbol (US Dollar)
-    'limit': 1440,      # Maximum number of data
+    'limit': 2000,      # Maximum number of data
     'aggregate': 1,     # Interval 1min
-    'api_key': ''       # **To safeguard my API call counts, I deleted my API key ***
+    'api_key': 'eaf45a319280874c05640ef522698d8db46fd612e723631920ffd4a540552f4f'       # **To safeguard my API call counts, I deleted my API key ***
 }
 
 response = requests.get(url, params=params)
