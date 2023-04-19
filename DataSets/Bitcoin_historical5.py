@@ -8,7 +8,7 @@ params = {
     'tsym': 'USD',      # To symbol (US Dollar)
     'limit': 2000,      # Maximum number of data
     'aggregate': 1,     # Interval 1min
-    'api_key': ''       # **To safeguard my API call counts, I deleted my API key ***
+    'api_key': '6bd78243689fbb635cd376fd6247d7e380465eef7e0fa753e8c02e341f6e579a'       # **To safeguard my API call counts, I deleted my API key ***
 }
 
 response = requests.get(url, params=params)
@@ -56,7 +56,7 @@ for i in range(50, len(data['Data']['Data'])):
     data['Data']['Data'][i]['ema50'] = ema50
     prev_ema50 = ema50
 
-with open('bitcoin_prices5.csv', mode='w', newline='') as csv_file:
+with open('bitcoin_prices6.csv', mode='w', newline='') as csv_file:
     fieldnames = ['timestamp', '-1min', 'sma7', 'sma25', 'sma50', 'ema7', 'ema25', 'ema50', 'price']
     writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
     writer.writeheader()
